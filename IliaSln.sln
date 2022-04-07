@@ -5,17 +5,22 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{30EBC221-B410-46E5-88C8-C8EC876086F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILIA.SimpleStore.API", "src\ILIA.SimpleStore.API\ILIA.SimpleStore.API.csproj", "{6B50BD83-511C-4298-8DE0-6E6EFD392809}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILIA.SimpleStore.API", "src\ILIA.SimpleStore.API\ILIA.SimpleStore.API.csproj", "{6B50BD83-511C-4298-8DE0-6E6EFD392809}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILIA.SimpleStore.Domain", "src\ILIA.SimpleStore.Domain\ILIA.SimpleStore.Domain.csproj", "{A976F969-27D1-424E-A70F-AED0E64E1FCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILIA.SimpleStore.Domain", "src\ILIA.SimpleStore.Domain\ILIA.SimpleStore.Domain.csproj", "{A976F969-27D1-424E-A70F-AED0E64E1FCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILIA.SimpleStore.Persistence", "src\ILIA.SimpleStore.Persistence\ILIA.SimpleStore.Persistence.csproj", "{8F629A30-A98C-4CF8-9124-3C27DB90EB56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILIA.SimpleStore.Persistence", "src\ILIA.SimpleStore.Persistence\ILIA.SimpleStore.Persistence.csproj", "{8F629A30-A98C-4CF8-9124-3C27DB90EB56}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F16753B2-ED69-432E-ACA1-69477A81F0AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILIA.SimpleStore.Tests", "tests\ILIA.SimpleStore.Tests\ILIA.SimpleStore.Tests.csproj", "{5141AB00-34A6-4329-93FF-1E1BBF4C17B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILIA.SimpleStore.IntegrationTests", "ILIA.SimpleStore.IntegrationTests\ILIA.SimpleStore.IntegrationTests.csproj", "{1891D936-D1B7-487D-9F2A-8260B6F660DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILIA.SimpleStore.IntegrationTests", "ILIA.SimpleStore.IntegrationTests\ILIA.SimpleStore.IntegrationTests.csproj", "{1891D936-D1B7-487D-9F2A-8260B6F660DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E386D0D9-3417-43F3-93DD-17237BE81EB0}"
+	ProjectSection(SolutionItems) = preProject
+		Script.csx = Script.csx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
