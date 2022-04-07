@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ILIA.SimpleStore.API\ILIA.SimpleStore.API.csproj" />
+  </ItemGroup>
+
 </Project>
