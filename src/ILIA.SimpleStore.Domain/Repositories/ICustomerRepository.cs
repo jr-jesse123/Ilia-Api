@@ -2,6 +2,6 @@
 {
     public interface ICustomerRepository : IRepository<Customer>
     {
-        public Customer GetCustomersAndRelatedOrdersById();
+        public Task<Customer> GetCustomersAndRelatedOrdersById(Guid id);
     }
 }
