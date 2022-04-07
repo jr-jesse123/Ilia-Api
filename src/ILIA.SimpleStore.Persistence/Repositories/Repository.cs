@@ -10,8 +10,8 @@ namespace ILIA.SimpleStore.Persistence.Repositories;
 
 public class Repository<T> : IRepository<T> where T : EntityBase
 {
-    private SimpleStoreContext Context;
-    private DbSet<T> Entities;
+    protected SimpleStoreContext Context;
+    protected DbSet<T> Entities;
 
     public Repository(SimpleStoreContext context)
     {
