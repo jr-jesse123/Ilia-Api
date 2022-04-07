@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ILIA.SimpleStore.Domain;
 
-public class Customer
+public class Customer : EntityBase
 {
 
     public Customer(string name, string email, IEnumerable<Order> orders)

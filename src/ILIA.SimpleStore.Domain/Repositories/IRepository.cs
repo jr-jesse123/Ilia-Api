@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ILIA.SimpleStore.Domain
 {
-    public interface IRepository<T>
+    public interface IRepository<T> where T : EntityBase
     {
         public T GetById(Guid id);
         public T Add(T entity);
