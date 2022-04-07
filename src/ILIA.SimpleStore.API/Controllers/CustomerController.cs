@@ -1,4 +1,6 @@
-﻿using ILIA.SimpleStore.API.Models;
+﻿using AutoMapper;
+using ILIA.SimpleStore.API.Models;
+using ILIA.SimpleStore.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -8,42 +10,71 @@ namespace ILIA.SimpleStore.API.Controllers
     [Route("[controller]")] //TODO: CHECK IF THIS IS THE DEFAULT
     public class CustomerController : ControllerBase
     {
-        private readonly ILogger logger;
+        private readonly ILogger<CustomerController> logger;
+        private readonly ICustomerRepository customerRepository;
+        private readonly IMapper mapper;
 
-        public CustomerController(ILogger logger)
+        public CustomerController(ILogger<CustomerController> logger, ICustomerRepository customerRepository, IMapper mapper)
         {
             this.logger = logger;
+            this.customerRepository = customerRepository;
+            this.mapper = mapper;
         }
 
 
         //TODO: DECORATE ACTIONS FOR SWAGGER
         [HttpGet]
-        public ActionResult<CustomerModel> Get(bool includSubOrders = false)
+        public async Task<ActionResult<CustomerModel>> GetAsync()
         {
-            var result = new CustomerModel();
-            return Ok(result);
+            var domainsCurstomers = await customerRepository.GetAll() ;
+            var models = domainsCurstomers.Select(dc => mapper.Map<CustomerModel>(dc));
+            
+            return Ok(models);
         }
 
 
         [HttpPost]
-        public ActionResult<CustomerModel> Create(CustomerModel customerModel) //TOOD: should we have a sepated model for creatioon?
+        public async Task<ActionResult<CustomerModel>> CreateAsync(CustomerModel customerModel) //TOOD: should we have a diferente model for creatioon?
         {
-            var result = new CustomerModel();
+            var domainCustomer = mapper.Map<Customer>(customerModel);
 
-            var uri = "create output uri";
+            await customerRepository.Add(domainCustomer);
+            await customerRepository.Commit();
 
-            return Created(uri, result);
+            var uri = "";//TODO: CREATE URI FOR GET BY ID
+
+            return Created(uri, domainCustomer);
         }
 
 
 
+
+        [HttpPost]
+        [Route("/{CostumerId:Guid}")]
+        public async Task<ActionResult<CustomerModel>> GetById(Guid id) //TOOD: should we have a diferente model for creatioon?
+        {
+
+            //TODO: ABSTRACT NOTFOUND VS OK RESULT
+
+            var domainCustomer = await customerRepository.GetById(id);
+            if (domainCustomer is null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var customerModel = mapper.Map<CustomerModel>(domainCustomer);
+                return Ok(customerModel);
+            }
+
+        }
 
 
 
 
         //TODO: IMPLEMENT CREATE
 
-        //TODO: IMPLEMENT GETBY ID
+
 
         //TODO: IMPLEMENT POST
 
