@@ -17,14 +17,16 @@ namespace ILIA.SimpleStore.API.Controllers
 
 
         //TODO: DECORATE ACTIONS FOR SWAGGER
-        public ActionResult<CustomerController> Get(bool includSubOrders = false)
+        [HttpGet]
+        public ActionResult<CustomerModel> Get(bool includSubOrders = false)
         {
-            var result = new CustomerModel ();
+            var result = new CustomerModel();
             return Ok(result);
         }
 
 
-        public ActionResult<int> Create(CustomerModel customerModel) //TOOD: should we have a sepated model for creatioon?
+        [HttpPost]
+        public ActionResult<CustomerModel> Create(CustomerModel customerModel) //TOOD: should we have a sepated model for creatioon?
         {
             var result = new CustomerModel();
 
@@ -35,7 +37,7 @@ namespace ILIA.SimpleStore.API.Controllers
 
 
 
-        public ActionResult<OrderModel> 
+
 
 
 

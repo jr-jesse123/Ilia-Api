@@ -16,10 +16,11 @@ namespace ILIA.SimpleStore.API.Controllers
         }
 
         [Route("customers/{customerId:Int}")]
+        [HttpPost]
         public ActionResult<OrderModel> Create(int customerId)
         {
             var uri = "";
-            return Created(uri,new OrderModel());
+            return Created(uri, new OrderModel());
         }
     }
 }
