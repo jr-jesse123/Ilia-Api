@@ -7,95 +7,95 @@ using Microsoft.Extensions.Logging;
 
 
 
-namespace ILIA.SimpleStore.API.Controllers
+namespace ILIA.SimpleStore.API.Controllers;
+
+[Route("Customers")] //TODO: CHECK IF THIS IS THE DEFAULT
+public class CustomerController : BaseCustomController
 {
-    [ApiController]
-    [Route("Customers")] //TODO: CHECK IF THIS IS THE DEFAULT
-    public class CustomerController : ControllerBase
+    
+    public static string _BaseUrl = nameof(CustomerController).RemoveSentence("Controller") + "s" + "/";
+    public static string _GetAll = _BaseUrl ;
+    public static string _Create = _BaseUrl ;
+    public static string _GetById(Guid id) => _BaseUrl + "/" + id;
+
+
+    private readonly ILogger<CustomerController> logger;
+    private readonly ICustomerRepository customerRepository;
+    
+
+    public CustomerController(ILogger<CustomerController> logger, ICustomerRepository customerRepository, IMapper mapper) : base(mapper)
     {
-        
-        public static string _BaseUrl = nameof(CustomerController).RemoveSentence("Controller") + "s" + "/";
-        public static string _GetAll = _BaseUrl ;
-        public static string _Create = _BaseUrl ;
-        public static string _GetById(Guid id) => _BaseUrl + "/" + id;
-
-
-        private readonly ILogger<CustomerController> logger;
-        private readonly ICustomerRepository customerRepository;
-        private readonly IMapper mapper;
-
-        public CustomerController(ILogger<CustomerController> logger, ICustomerRepository customerRepository, IMapper mapper)
-        {
-            this.logger = logger;
-            this.customerRepository = customerRepository;
-            this.mapper = mapper;
-        }
-
-
-        //TODO: DECORATE ACTIONS FOR SWAGGER
-        [HttpGet]
-        public async Task<ActionResult<CustomerModel>> Get()
-        {
-            var domainsCurstomers = await customerRepository.GetAll() ;
-            var models = domainsCurstomers.Select(dc => mapper.Map<CustomerModel>(dc));
-            
-            return Ok(models);
-        }
-
-
-        [HttpPost]
-        public async Task<ActionResult<CustomerModel>> Create(CustomerModel customerModel) //TOOD: should we have a diferente model for creatioon?
-        {
-            var domainCustomer = mapper.Map<Customer>(customerModel);
-
-            var storedCustomer =  await customerRepository.Add(domainCustomer);
-            await customerRepository.Commit();
-
-
-            var outputCustomerModel = mapper.Map<CustomerModel>(storedCustomer);    
-
-            var uri = "";//TODO: CREATE URI FOR GET BY ID
-
-            return Created(uri, outputCustomerModel);
-        }
-
-
-
-
-        [HttpPost]
-        [Route("/{CostumerId:Guid}")]
-        public async Task<ActionResult<CustomerModel>> GetById(Guid id) //TOOD: should we have a diferente model for creatioon?
-        {
-
-            //TODO: ABSTRACT NOTFOUND VS OK RESULT
-
-            var domainCustomer = await customerRepository.GetById(id);
-            if (domainCustomer is null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                var customerModel = mapper.Map<CustomerModel>(domainCustomer);
-                return Ok(customerModel);
-            }
-
-        }
-
-
-
-
-        //TODO: IMPLEMENT CREATE
-
-
-
-        //TODO: IMPLEMENT POST
-
-        //TODO: IMPLEMENTE PUT
-
-        //TODO: IMPLEMENT DELTE
-
-
-
+        this.logger = logger;
+        this.customerRepository = customerRepository;
     }
+
+
+    //TODO: DECORATE ACTIONS FOR SWAGGER
+    [HttpGet]
+    public async Task<ActionResult<CustomerModel>> Get()
+    {
+        var domainsCurstomers = await customerRepository.GetAll() ;
+        var models = domainsCurstomers.Select(dc => mapper.Map<CustomerModel>(dc));
+        
+        return Ok(models);
+    }
+
+
+    [HttpPost]
+    public async Task<ActionResult<CustomerModel>> Create(CustomerModel customerModel) 
+    {
+        var domainCustomer = mapper.Map<Customer>(customerModel);
+
+        var storedCustomer =  await customerRepository.Add(domainCustomer);
+        await customerRepository.Commit();
+
+
+        var outputCustomerModel = mapper.Map<CustomerModel>(storedCustomer);    
+
+        var uri = "";//TODO: CREATE URI FOR GET BY ID
+
+        return Created(uri, outputCustomerModel);
+    }
+
+
+
+
+    /// <summary>
+    /// Save a person
+    /// </summary>
+    /// <response code="200">OkokOKOKOK</response>
+    /// <response code="400">Bad Request</response>
+    /// <response code="404">NOT FOUND</response>
+    /// <response code="500">Internal Server error</response>
+    [HttpPost]
+    [Route("{CostumerId:Guid}")]
+    [ProducesResponseType(typeof(CustomerModel), 201)]
+    [ProducesResponseType( 404)]
+    [ProducesResponseType( typeof(Order),400)]
+
+    public async Task<ActionResult<CustomerModel>> GetById(Guid id) 
+    {
+        //TODO: ABSTRACT NOTFOUND VS OK RESULT
+
+        var domainCustomer = await customerRepository.GetById(id);
+
+        return MaptoModelAndStatusCode<CustomerModel>(domainCustomer);
+    }
+
+
+
+
+
+    //TODO: IMPLEMENT CREATE
+
+
+
+    //TODO: IMPLEMENT POST
+
+    //TODO: IMPLEMENTE PUT
+
+    //TODO: IMPLEMENT DELTE
+
+
+
 }
