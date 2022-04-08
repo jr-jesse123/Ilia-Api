@@ -6,7 +6,7 @@ namespace ILIA.SimpleStore.Tests
 {
     public class ProfileTests
     {
-        [Fact]
+        [Fact(DisplayName = "Mapping Configurations Are Valid")]
         public void Test1()
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<DomainToModelMappingProfile>());
