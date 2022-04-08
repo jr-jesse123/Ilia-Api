@@ -1,5 +1,5 @@
 using AutoMapper;
-using ILIA.SimpleStore.API.AutoMapper;
+using ILIA.SimpleStore.API.Mappings;
 using Xunit;
 
 namespace ILIA.SimpleStore.Tests
