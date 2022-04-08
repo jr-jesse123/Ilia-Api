@@ -13,15 +13,22 @@ public class Customer : EntityBase
     {
 
     }
-    public Customer(string name, string email, IEnumerable<Order> orders)
+    public Customer(string name, string email)
     {
         Name = name;
         Email = email;
-        Orders = orders;
+
     }
 
     public string Name { get; set; }
     public string Email { get; set; }
-    public IEnumerable<Order> Orders { get; set; }
+    private List<Order> orders { get; set; } = new List<Order>();
+    public IEnumerable<Order> Orders { get => Orders.AsEnumerable(); }
+
+
+    public void AddOrder(Order order)
+    {
+        orders.Add(order);
+    }
 }
 
