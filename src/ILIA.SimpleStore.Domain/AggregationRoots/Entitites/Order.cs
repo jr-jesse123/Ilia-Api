@@ -2,23 +2,31 @@
 
 public class Order : EntityBase
 {
-    public Order(decimal price, DateTime createdAt, Customer customer)
+    public Order(decimal price)
     {
         Price = price;
-        CreatedAt = createdAt;
-        Customer = customer;
+        
+        
     }
     
     //EF
     protected Order()
     {
-
+        
+        CreatedAt  = DateTime.Now;
     }
 
-    public decimal Price { get; set; }
-    public DateTime CreatedAt { get; set; }
+    internal void SetCustomer(Customer customer)
+    {
+        Customer = customer;
+    }
 
-    public Customer Customer {get;}
+    public decimal Price { get;  }
+    public DateTime CreatedAt { get; } 
+
+    public Customer Customer { get; private set; }
+
+    public Guid CustomerId { get; }
 
     //TODO: IMPLEMENT STATUS
 }

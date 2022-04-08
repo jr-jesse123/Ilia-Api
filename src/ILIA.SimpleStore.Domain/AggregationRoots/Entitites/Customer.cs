@@ -8,7 +8,7 @@ namespace ILIA.SimpleStore.Domain;
 
 public class Customer : EntityBase
 {
-
+    //TODO: ADD CONSTRANT TO UNIQUE E-MAIL
     protected Customer()
     {
 
@@ -22,13 +22,14 @@ public class Customer : EntityBase
 
     public string Name { get; set; }
     public string Email { get; set; }
-    private List<Order> orders = new List<Order>();
+    private List<Order> orders { get; set; } = new List<Order>();
     public IEnumerable<Order> Orders { get => orders; }
 
 
     public void AddOrder(Order order)
     {
         orders.Add(order);
+        order.SetCustomer(this);
     }
 
     ////EF

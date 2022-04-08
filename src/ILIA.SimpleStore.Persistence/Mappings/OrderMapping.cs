@@ -17,6 +17,8 @@ namespace ILIA.SimpleStore.Persistence.Mappings
 
             builder.Property(o => o.Price).HasPrecision(2).IsRequired();
 
+            builder.HasOne(o => o.Customer).WithMany(c => c.Orders).HasForeignKey(o => o.CustomerId);
+
             builder.Property(o => o.CreatedAt).IsRequired();
             
             builder.ToTable("Orders");

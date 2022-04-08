@@ -85,7 +85,18 @@ public class CustomerControllerTests : IntegrationTestBase
         //Arrange
         var customer = await CreateCustomer(validCustumer);
 
-        throw new NotImplementedException("populate orders for this customer");
+
+        var orderModel = new OrderModel()
+        {
+            Price = 100.00M
+        };
+
+        var response = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
+        response.EnsureSuccessStatusCode();
+        
+        response = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
+        response.EnsureSuccessStatusCode();        
+
 
         //Act
         var underTest = await GetNullabeClientByIdAsync(customer.Id.Value);
@@ -95,7 +106,7 @@ public class CustomerControllerTests : IntegrationTestBase
         underTest.Email.Should().Be(customer.Email);
         underTest.Name.Should().Be(customer.Name);
 
-        throw new NotImplementedException("check for orders");
+        underTest.Orders.Count().Should().BeGreaterThan(0);
     }
 
 
@@ -122,13 +133,56 @@ public class CustomerControllerTests : IntegrationTestBase
         //Arrange
         var customer = await CreateCustomer(validCustumer);
 
-        throw new NotImplementedException("create orders for this costumer");
+        var orderModel = new OrderModel()
+        {
+            Price = 100.00M
+        };
+
+        var response = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
+        response.EnsureSuccessStatusCode();
+        
+        
+
+        //throw new NotImplementedException("create orders for this costumer");
 
         //Act
         var underTest = await GetCustumers();
 
         //Assert
         underTest.Count().Should().BeGreaterThan(0);
+        underTest.All(c => c.Orders.Count() > 0 ).Should().BeTrue();
+
+    }
+
+
+
+    [Fact(DisplayName = "We can create more than one order fo a custumer")]
+    public async Task Test8()
+    {
+        //Arrange
+        var customer = await CreateCustomer(validCustumer);
+
+        var orderModel = new OrderModel()
+        {
+            Price = 100.00M
+        };
+
+        var response = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
+        response.EnsureSuccessStatusCode();
+        
+        var response2 = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
+        response.EnsureSuccessStatusCode();
+
+
+        ////throw new NotImplementedException("create orders for this costumer");
+
+        ////Act
+        //var underTest = await GetCustumers();
+
+        ////Assert
+        //underTest.Count().Should().BeGreaterThan(0);
+        //underTest.All(c => c.Orders.Count() > 0).Should().BeTrue();
+
     }
 
 
