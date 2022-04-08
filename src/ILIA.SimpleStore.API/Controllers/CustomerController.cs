@@ -14,8 +14,9 @@ namespace ILIA.SimpleStore.API.Controllers
     public class CustomerController : ControllerBase
     {
         
-        public static string _BaseUrl = nameof(CustomerController).RemoveSentence("Controller");
-        public static string _GetAll = _BaseUrl + "s" + "/" ;
+        public static string _BaseUrl = nameof(CustomerController).RemoveSentence("Controller") + "s" + "/";
+        public static string _GetAll = _BaseUrl ;
+        public static string _Create = _BaseUrl ;
         public static string _GetById(Guid id) => _BaseUrl + "/" + id;
 
 
@@ -47,12 +48,15 @@ namespace ILIA.SimpleStore.API.Controllers
         {
             var domainCustomer = mapper.Map<Customer>(customerModel);
 
-            await customerRepository.Add(domainCustomer);
+            var storedCustomer =  await customerRepository.Add(domainCustomer);
             await customerRepository.Commit();
+
+
+            var outputCustomerModel = mapper.Map<CustomerModel>(storedCustomer);    
 
             var uri = "";//TODO: CREATE URI FOR GET BY ID
 
-            return Created(uri, domainCustomer);
+            return Created(uri, outputCustomerModel);
         }
 
 
