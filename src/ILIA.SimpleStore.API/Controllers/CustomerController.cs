@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 
 namespace ILIA.SimpleStore.API.Controllers;
-
+[ApiController]
 [Route("Customers")] //TODO: CHECK IF THIS IS THE DEFAULT
 public class CustomerController : BaseCustomController
 {
@@ -42,7 +42,7 @@ public class CustomerController : BaseCustomController
 
 
     [HttpPost]
-    public async Task<ActionResult<CustomerModel>> Create(CustomerModel customerModel) 
+    public async Task<ActionResult<CustomerModel>> Create(CustomerCreateModel customerModel) 
     {
         var domainCustomer = mapper.Map<Customer>(customerModel);
 

@@ -10,5 +10,6 @@ public class DomainToModelMappingProfile : Profile
     {
         CreateMap<Order, OrderModel>().ReverseMap();
         CreateMap<Customer, CustomerModel>().ReverseMap();
+        CreateMap<Customer, CustomerCreateModel>().ReverseMap();
     }
 }
