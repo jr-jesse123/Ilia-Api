@@ -17,7 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ILIA.SimpleStore.Domain\ILIA.SimpleStore.Domain.csproj" />
+    <Folder Include="Extentions\NovaPasta\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ILIA.SimpleStore.Persistence\ILIA.SimpleStore.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
