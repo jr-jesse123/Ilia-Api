@@ -18,7 +18,7 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 
 
-## 🚀 Instalando <nome_do_projeto>
+## 🚀 Instalando IliaApi
 
 Para instalar o <nome_do_projeto>, siga estas etapas:
 
