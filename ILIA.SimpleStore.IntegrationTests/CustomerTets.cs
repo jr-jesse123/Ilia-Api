@@ -25,7 +25,7 @@ public class CustomerTets : IntegrationTestBase
         this.outputHelper = outputHelper;
     }
 
-    protected async Task<IEnumerable<CustomerModel>> GetCostumers()
+    protected async Task<IEnumerable<CustomerModel>> GetCustumers()
     {
         var response = await testClient.GetAsync(CustomerController._GetAll);
         response.EnsureSuccessStatusCode();
@@ -33,11 +33,21 @@ public class CustomerTets : IntegrationTestBase
 
     }
 
+    protected async Task<CustomerModel> CreateCustomer(CustomerModel costumer)
+    {
+
+        var response = await testClient.PostAsJsonAsync(CustomerController._Create, costumer);
+
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsAsync<CustomerModel>();
+
+    }
+
     [Fact(DisplayName = "Get costumers should return empty List when there are no customers to return")]
     public async Task Test1()
     {
         //Act
-        var underTest = await GetCostumers();
+        var underTest = await GetCustumers();
         
         //Assert
         underTest.ToList().Count.Should().Be(0);
@@ -47,13 +57,13 @@ public class CustomerTets : IntegrationTestBase
     public async Task InsertClient()
     {
         //Act
-        var response = await testClient.PostAsJsonAsync(CustomerController._Create,costumer);
+        var underTest = await CreateCustomer(costumer);
 
         //Assert
-        response.EnsureSuccessStatusCode();
-        var underTest = await response.Content.ReadAsAsync<CustomerModel>();
         underTest.Id.Should().NotBeNull();
         underTest.Id.Should().NotBe(System.Guid.Empty);
+
+        
     }
 
 
@@ -64,7 +74,7 @@ public class CustomerTets : IntegrationTestBase
         await InsertClient();
 
         //Act
-        var underTest = await GetCostumers();
+        var underTest = await GetCustumers();
 
         //Assert
         underTest.Count().Should().BeGreaterThan(0);
