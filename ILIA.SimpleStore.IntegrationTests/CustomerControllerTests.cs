@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using ILIA.SimpleStore.API.Controllers;
 using ILIA.SimpleStore.API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -10,7 +11,7 @@ using Xunit.Abstractions;
 
 namespace ILIA.SimpleStore.IntegrationTests;
 
-public class CustomerTets : IntegrationTestBase
+public class CustomerControllerTests : IntegrationTestBase
 {
     private readonly ITestOutputHelper outputHelper;
 
@@ -20,27 +21,9 @@ public class CustomerTets : IntegrationTestBase
         Name = "happy costumer"
     };
 
-    public CustomerTets(ITestOutputHelper outputHelper)
+    public CustomerControllerTests(ITestOutputHelper outputHelper)
     {
         this.outputHelper = outputHelper;
-    }
-
-    protected async Task<IEnumerable<CustomerModel>> GetCustumers()
-    {
-        var response = await testClient.GetAsync(CustomerController._GetAll);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsAsync<List<CustomerModel>>();
-
-    }
-
-    protected async Task<CustomerModel> CreateCustomer(CustomerModel costumer)
-    {
-
-        var response = await testClient.PostAsJsonAsync(CustomerController._Create, costumer);
-
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsAsync<CustomerModel>();
-
     }
 
     [Fact(DisplayName = "Get costumers should return empty List when there are no customers to return")]
@@ -80,7 +63,6 @@ public class CustomerTets : IntegrationTestBase
         underTest.Count().Should().BeGreaterThan(0);
     }
 
-
     [Fact(DisplayName = "Get costumers by id should return costumer for valid id")]
     public async Task Test4Async()
     {
@@ -88,19 +70,27 @@ public class CustomerTets : IntegrationTestBase
         var client = await CreateCustomer(validCustumer);
 
         //Act
-        var endpoint = $"/Customers/{client.Id}";
-
-        var response = await testClient.GetAsync(endpoint);
-
-        response.EnsureSuccessStatusCode();
-
-        var underTest = await response.Content.ReadAsAsync<CustomerModel>();
+        var underTest = await GetNullabeClientByIdAsync(client.Id.Value);
 
         //Assert
         underTest.Id.Should().Be(client.Id);
 
         underTest.Email.Should().Be(client.Email);
         underTest.Name.Should().Be(client.Name);
+    }
+
+
+    [Fact(DisplayName = "Get costumers by id should return NOT Found for unexistent id")]
+    public async Task Test5Async()
+    {
+        //Arrange
+        var id = Guid.NewGuid();
+
+        //Act
+        var underTest = await GetNullabeClientByIdAsync(id);
+
+        //Assert
+        underTest.Should().BeNull();
     }
 
 
