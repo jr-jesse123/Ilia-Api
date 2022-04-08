@@ -8,7 +8,11 @@ namespace ILIA.SimpleStore.Domain;
 
 public class Customer : EntityBase
 {
+    //EF
+    protected Customer()
+    {
 
+    }
     public Customer(string name, string email, IEnumerable<Order> orders)
     {
         Name = name;
