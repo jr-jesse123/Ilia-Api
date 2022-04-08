@@ -127,34 +127,6 @@ public class CustomerControllerTests : IntegrationTestBase
 
 
 
-    [Fact(DisplayName = "Customer List from get Custoemrs should not contain OrdersInfo")]
-    public async Task Test7()
-    {
-        //Arrange
-        var customer = await CreateCustomer(validCustumer);
-
-        var orderModel = new OrderModel()
-        {
-            Price = 100.00M
-        };
-
-        var response = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
-        response.EnsureSuccessStatusCode();
-        
-        
-
-        //throw new NotImplementedException("create orders for this costumer");
-
-        //Act
-        var underTest = await GetCustumers();
-
-        //Assert
-        underTest.Count().Should().BeGreaterThan(0);
-        underTest.All(c => c.Orders.Count() > 0 ).Should().BeTrue();
-
-    }
-
-
 
     [Fact(DisplayName = "We can create more than one order fo a custumer")]
     public async Task Test8()
