@@ -20,15 +20,17 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 ## 🚀 Instalando IliaApi
 
-Para instalar o <nome_do_projeto>, siga estas etapas:
+Para instalar, siga estas etapas:
 
 Linux e macOS:
 ```
+cd ./src/ILIA.SimpleStore.API
 Dotnet Run 
 ```
 
 Windows:
 ```
+cd ./src/ILIA.SimpleStore.API
 Dotnet Run 
 ```
 
