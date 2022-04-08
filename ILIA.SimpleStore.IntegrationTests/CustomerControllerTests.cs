@@ -51,7 +51,7 @@ public class CustomerControllerTests : IntegrationTestBase
 
 
     [Fact(DisplayName = "Get costumers should return populated List after valid Customers have been Created")]
-    public async Task Test3Async()
+    public async Task Test3()
     {
         //Arrange
         await CreateClientTest();
@@ -64,24 +64,43 @@ public class CustomerControllerTests : IntegrationTestBase
     }
 
     [Fact(DisplayName = "Get costumers by id should return costumer for valid id")]
-    public async Task Test4Async()
+    public async Task Test4()
     {
         //Arrange
-        var client = await CreateCustomer(validCustumer);
+        var customer = await CreateCustomer(validCustumer);
 
         //Act
-        var underTest = await GetNullabeClientByIdAsync(client.Id.Value);
+        var underTest = await GetNullabeClientByIdAsync(customer.Id.Value);
 
         //Assert
-        underTest.Id.Should().Be(client.Id);
+        underTest.Id.Should().Be(customer.Id);
+        underTest.Email.Should().Be(customer.Email);
+        underTest.Name.Should().Be(customer.Name);
+    }
 
-        underTest.Email.Should().Be(client.Email);
-        underTest.Name.Should().Be(client.Name);
+
+    [Fact(DisplayName = "Get costumers by id with valid id should return costumer and related Orders")]
+    public async Task Test5()
+    {
+        //Arrange
+        var customer = await CreateCustomer(validCustumer);
+
+        throw new NotImplementedException("populate orders for this customer");
+
+        //Act
+        var underTest = await GetNullabeClientByIdAsync(customer.Id.Value);
+
+        //Assert
+        underTest.Id.Should().Be(customer.Id);
+        underTest.Email.Should().Be(customer.Email);
+        underTest.Name.Should().Be(customer.Name);
+
+        throw new NotImplementedException("check for orders");
     }
 
 
     [Fact(DisplayName = "Get costumers by id should return NOT Found for unexistent id")]
-    public async Task Test5Async()
+    public async Task Test6()
     {
         //Arrange
         var id = Guid.NewGuid();
@@ -95,6 +114,22 @@ public class CustomerControllerTests : IntegrationTestBase
 
 
 
+
+
+    [Fact(DisplayName = "Customer List from get Custoemrs should not contain OrdersInfo")]
+    public async Task Test7()
+    {
+        //Arrange
+        var customer = await CreateCustomer(validCustumer);
+
+        throw new NotImplementedException("create orders for this costumer");
+
+        //Act
+        var underTest = await GetCustumers();
+
+        //Assert
+        underTest.Count().Should().BeGreaterThan(0);
+    }
 
 
 }
