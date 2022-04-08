@@ -67,17 +67,16 @@ public class CustomerController : BaseCustomController
     /// <response code="400">Bad Request</response>
     /// <response code="404">NOT FOUND</response>
     /// <response code="500">Internal Server error</response>
-    [HttpPost]
-    [Route("{CostumerId:Guid}")]
+    [HttpGet]
+    [Route("{CustumerId:Guid}")]
     [ProducesResponseType(typeof(CustomerModel), 201)]
-    [ProducesResponseType( 404)]
-    [ProducesResponseType( typeof(Order),400)]
+    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(Order), 400)]
 
-    public async Task<ActionResult<CustomerModel>> GetById(Guid id) 
+    public async Task<ActionResult<CustomerModel>> GetById(Guid CustumerId)
     {
-        //TODO: ABSTRACT NOTFOUND VS OK RESULT
-
-        var domainCustomer = await customerRepository.GetById(id);
+        
+        var domainCustomer = await customerRepository.GetById(CustumerId);
 
         return MaptoModelAndStatusCode<CustomerModel>(domainCustomer);
     }
