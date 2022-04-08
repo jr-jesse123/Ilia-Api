@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ILIA.SimpleStore.API.Models;
+using ILIA.SimpleStore.API.Services;
+using ILIA.SimpleStore.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ILIA.SimpleStore.API.Controllers
@@ -10,18 +12,44 @@ namespace ILIA.SimpleStore.API.Controllers
     {
 
         private readonly ILogger<OrderController> logger;
+        private readonly IOrderService orderService;
+        private readonly IRepository<Order> repository;
 
-        public OrderController(ILogger<OrderController> logger, IMapper mapper) : base(mapper)
+        public OrderController(ILogger<OrderController> logger, IOrderService orderService, IMapper mapper) : base(mapper)
         {
             this.logger = logger;
+            this.orderService = orderService;
+            this.repository = repository;
         }
 
-        [Route("customers/{customerId:Int}")]
+        [Route("customers/{customerId:Guid}")]
         [HttpPost]
-        public ActionResult<OrderModel> Create(int customerId)
+        public async Task<ActionResult<OrderModel>> CreateAsync(OrderModel orderModel, Guid customerId)
         {
-            var uri = "";
-            return Created(uri, new OrderModel());
+            var domainOrder = mapper.Map<Order>(orderModel);
+
+            var (orderCreated, errors) = await orderService.CreateOrder(domainOrder, customerId);
+            
+            if (errors.Count() > 0)
+            {
+                return BadRequest(errors);
+            }
+            else
+            {
+                var uri = ""; //TODO: POPLATE URI
+                return Created(uri, new OrderModel());
+            }
+
+            
+        }
+
+
+        [Route("{customerId:Guid}")]
+        [HttpGet]
+        public ActionResult<OrderModel> Get(Guid customerId)
+        {
+
+            return Ok();
         }
     }
 }
