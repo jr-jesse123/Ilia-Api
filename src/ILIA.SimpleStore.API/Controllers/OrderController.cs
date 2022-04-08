@@ -27,26 +27,27 @@ namespace ILIA.SimpleStore.API.Controllers
         public async Task<ActionResult<OrderModel>> CreateAsync(OrderModel orderModel, Guid customerId)
         {
             var domainOrder = mapper.Map<Order>(orderModel);
-
+            
+            
             var (orderCreated, errors) = await orderService.CreateOrder(domainOrder, customerId);
             
-            if (errors.Count() > 0)
+            if (errors is not null && errors.Count() > 0)
             {
                 return BadRequest(errors);
             }
             else
             {
                 var uri = ""; //TODO: POPLATE URI
-                return Created(uri, new OrderModel());
+                return Created(uri, orderCreated);
             }
 
             
         }
 
 
-        [Route("{customerId:Guid}")]
+        [Route("{orderId:Guid}")]
         [HttpGet]
-        public ActionResult<OrderModel> Get(Guid customerId)
+        public ActionResult<OrderModel> Get(Guid orderId)
         {
 
             return Ok();
