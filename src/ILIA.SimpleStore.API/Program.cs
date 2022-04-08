@@ -1,12 +1,14 @@
+using ILIA.SimpleStore.API.Services;
 using ILIA.SimpleStore.Persistence;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
@@ -28,9 +30,14 @@ builder.Services.AddSwaggerGen(
         }
     );
 
-//swaggerGenOptions.IncludeXmlComments(xmlDocFile)
+
 
 builder.Services.AddDefaultPersisntece();
+
+
+
+builder.Services.AddTransient<IOrderService, OrderService>();
+
 builder.Services.AddAutoMapper( Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
