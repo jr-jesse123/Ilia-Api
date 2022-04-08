@@ -1,15 +1,24 @@
 ﻿using AutoMapper;
+using ILIA.SimpleStore.API.Extentions;
 using ILIA.SimpleStore.API.Models;
 using ILIA.SimpleStore.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+
+
 namespace ILIA.SimpleStore.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")] //TODO: CHECK IF THIS IS THE DEFAULT
+    [Route("Customers")] //TODO: CHECK IF THIS IS THE DEFAULT
     public class CustomerController : ControllerBase
     {
+        
+        public static string _BaseUrl = nameof(CustomerController).RemoveSentence("Controller");
+        public static string _GetAll = _BaseUrl + "s" + "/" ;
+        public static string _GetById(Guid id) => _BaseUrl + "/" + id;
+
+
         private readonly ILogger<CustomerController> logger;
         private readonly ICustomerRepository customerRepository;
         private readonly IMapper mapper;
@@ -24,7 +33,7 @@ namespace ILIA.SimpleStore.API.Controllers
 
         //TODO: DECORATE ACTIONS FOR SWAGGER
         [HttpGet]
-        public async Task<ActionResult<CustomerModel>> GetAsync()
+        public async Task<ActionResult<CustomerModel>> Get()
         {
             var domainsCurstomers = await customerRepository.GetAll() ;
             var models = domainsCurstomers.Select(dc => mapper.Map<CustomerModel>(dc));
@@ -34,7 +43,7 @@ namespace ILIA.SimpleStore.API.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<CustomerModel>> CreateAsync(CustomerModel customerModel) //TOOD: should we have a diferente model for creatioon?
+        public async Task<ActionResult<CustomerModel>> Create(CustomerModel customerModel) //TOOD: should we have a diferente model for creatioon?
         {
             var domainCustomer = mapper.Map<Customer>(customerModel);
 
