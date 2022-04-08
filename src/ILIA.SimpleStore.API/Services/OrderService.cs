@@ -24,7 +24,7 @@ namespace ILIA.SimpleStore.API.Services
 
             if (customer is null) return (null, new string[] { "Customer Not Found" });
 
-            //customer.AddOrder(order);
+            customer.AddOrder(order);
 
             _customerRepository.Update(customer);
 
