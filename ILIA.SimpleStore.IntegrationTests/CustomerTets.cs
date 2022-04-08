@@ -14,7 +14,7 @@ public class CustomerTets : IntegrationTestBase
 {
     private readonly ITestOutputHelper outputHelper;
 
-    private CustomerModel costumer = new ()
+    private CustomerModel validCustumer = new ()
     {
         Email = "teste@teste.com",
         Name = "happy costumer"
@@ -54,10 +54,10 @@ public class CustomerTets : IntegrationTestBase
     }
 
     [Fact(DisplayName ="Adding a valid new costumer Should return the same costumer with id populated")]
-    public async Task InsertClient()
+    public async Task CreateClientTest()
     {
         //Act
-        var underTest = await CreateCustomer(costumer);
+        var underTest = await CreateCustomer(validCustumer);
 
         //Assert
         underTest.Id.Should().NotBeNull();
@@ -71,7 +71,7 @@ public class CustomerTets : IntegrationTestBase
     public async Task Test3Async()
     {
         //Arrange
-        await InsertClient();
+        await CreateClientTest();
 
         //Act
         var underTest = await GetCustumers();
@@ -81,6 +81,27 @@ public class CustomerTets : IntegrationTestBase
     }
 
 
+    [Fact(DisplayName = "Get costumers by id should return costumer for valid id")]
+    public async Task Test4Async()
+    {
+        //Arrange
+        var client = await CreateCustomer(validCustumer);
+
+        //Act
+        var endpoint = $"/Customers/{client.Id}";
+
+        var response = await testClient.GetAsync(endpoint);
+
+        response.EnsureSuccessStatusCode();
+
+        var underTest = await response.Content.ReadAsAsync<CustomerModel>();
+
+        //Assert
+        underTest.Id.Should().Be(client.Id);
+
+        underTest.Email.Should().Be(client.Email);
+        underTest.Name.Should().Be(client.Name);
+    }
 
 
 
