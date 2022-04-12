@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using ILIA.SimpleStore.API.Controllers;
 using ILIA.SimpleStore.API.Models;
+using ILIA.SimpleStore.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,6 @@ public class CustomerControllerTests : IntegrationTestBase
 {
     private readonly ITestOutputHelper outputHelper;
 
-    private CustomerModel validCustumer = new ()
-    {
-        Email = "teste@teste.com",
-        Name = "happy costumer"
-    };
 
     public CustomerControllerTests(ITestOutputHelper outputHelper)
     {
@@ -91,10 +87,10 @@ public class CustomerControllerTests : IntegrationTestBase
             Price = 100.00M
         };
 
-        var response = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
+        var response = await testClient.PostAsJsonAsync($"/Orders/customers/{customer.Id}", orderModel);
         response.EnsureSuccessStatusCode();
         
-        response = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
+        response = await testClient.PostAsJsonAsync($"/Orders/customers/{customer.Id}", orderModel);
         response.EnsureSuccessStatusCode();        
 
 
@@ -128,34 +124,39 @@ public class CustomerControllerTests : IntegrationTestBase
 
 
 
-    [Fact(DisplayName = "We can create more than one order fo a custumer")]
-    public async Task Test8()
+
+
+    [Fact(DisplayName = "The link returned when creating a Customer should be valid for retriving the Customer")]
+    public async Task Test9()
     {
         //Arrange
-        var customer = await CreateCustomer(validCustumer);
+        var response = await testClient.PostAsJsonAsync(CustomerController._Create, validCustumer);
 
-        var orderModel = new OrderModel()
-        {
-            Price = 100.00M
-        };
+        var location = response.Headers.Location;
 
-        var response = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
-        response.EnsureSuccessStatusCode();
+        var locationResponse = await testClient.GetAsync(location.ToString());
+
+        var createdClient = await locationResponse.Content.ReadAsAsync<Customer>();
+
+
+        createdClient.Should().NotBeNull();
         
-        var response2 = await testClient.PostAsJsonAsync($"/Order/customers/{customer.Id}", orderModel);
-        response.EnsureSuccessStatusCode();
+
+        
 
 
-        ////throw new NotImplementedException("create orders for this costumer");
 
-        ////Act
-        //var underTest = await GetCustumers();
+
+
+        //Act
+        //var underTest = await testClient.GetAsync(response.)
 
         ////Assert
-        //underTest.Count().Should().BeGreaterThan(0);
-        //underTest.All(c => c.Orders.Count() > 0).Should().BeTrue();
+        //underTest.Id.Should().Be(customer.Id);
+        //underTest.Email.Should().Be(customer.Email);
+        //underTest.Name.Should().Be(customer.Name);
 
+        //underTest.Orders.Count().Should().BeGreaterThan(0);
     }
-
 
 }

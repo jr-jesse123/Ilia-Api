@@ -21,6 +21,13 @@ public abstract class IntegrationTestBase : IDisposable
 
     private  SimpleStoreContext _context;
 
+    protected CustomerModel validCustumer = new()
+    {
+        Email = "teste@teste.com",
+        Name = "happy costumer"
+    };
+
+
     public IntegrationTestBase() 
     {
 
