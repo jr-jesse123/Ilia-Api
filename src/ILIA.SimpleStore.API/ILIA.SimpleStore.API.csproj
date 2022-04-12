@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ILIA.SimpleStore.Persistence\ILIA.SimpleStore.Persistence.csproj" />
+    <ProjectReference Include="..\ILIA.SimpleStore.Persistence\ILIA.SimpleStore.Infra.csproj" />
   </ItemGroup>
 
 </Project>

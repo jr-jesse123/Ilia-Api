@@ -7,6 +7,13 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//var config = builder.Services.BuildServiceProvider();
+builder.Services.Configure<MailOptions>(options => 
+{
+    options.Port = 25;
+    options.Host = "localhost";
+});
+
 
 builder.Services.AddControllers().AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -37,6 +44,8 @@ builder.Services.AddDefaultPersisntece();
 
 
 builder.Services.AddTransient<IOrderService, OrderService>();
+
+builder.Services.AddTransient<IMailService, MailService>();
 
 builder.Services.AddAutoMapper( Assembly.GetExecutingAssembly());
 
