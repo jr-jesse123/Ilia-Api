@@ -56,6 +56,10 @@ namespace ILIA.SimpleStore.IntegrationTests
 
             retrivedOrder.Price.Should().Be(orderModel.Price);
 
+            retrivedOrder.CreatedAt.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMinutes(1));
+
+            
+
         }
     }
 }
