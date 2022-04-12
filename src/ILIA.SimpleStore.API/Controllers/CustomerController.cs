@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ILIA.SimpleStore.API.Controllers;
 [ApiController]
-[Route("Customers")] //TODO: CHECK IF THIS IS THE DEFAULT
+[Route("Customers")] 
 public class CustomerController : BaseCustomController
 {
     
@@ -30,9 +30,10 @@ public class CustomerController : BaseCustomController
     }
 
 
-    //TODO: DECORATE ACTIONS FOR SWAGGER
+    
     [HttpGet]
-    public async Task<ActionResult<CustomerModel>> Get()
+    [ProducesResponseType(typeof(IEnumerable<CustomerModel>), 200)]
+    public async Task<ActionResult<IEnumerable<CustomerModel>>> Get()
     {
         var domainsCurstomers = await customerRepository.GetAll() ;
         var models = domainsCurstomers.Select(dc => mapper.Map<CustomerModel>(dc));
@@ -42,6 +43,8 @@ public class CustomerController : BaseCustomController
     
         
     [HttpPost]
+    [ProducesResponseType(typeof(CustomerModel), 201)]
+    [ProducesResponseType(400)]
     public async Task<ActionResult<CustomerModel>> Create(CustomerCreateModel customerModel) 
     {
         var domainCustomer = mapper.Map<Customer>(customerModel);
@@ -49,30 +52,22 @@ public class CustomerController : BaseCustomController
         var storedCustomer =  await customerRepository.Add(domainCustomer);
         await customerRepository.Commit();
 
+        var outputCustomerModel = mapper.Map<CustomerModel>(storedCustomer);
 
-        var outputCustomerModel = mapper.Map<CustomerModel>(storedCustomer);    
+        var request = this.HttpContext.Request;
 
-        var uri = "";//TODO: CREATE URI FOR GET BY ID
-
+        var uri = $"{request.Scheme}://{request.Host}/Customers/{outputCustomerModel.Id}";
+        
         return Created(uri, outputCustomerModel);
     }
 
 
 
 
-    /// <summary>
-    /// Save a person
-    /// </summary>
-    /// <response code="200">OkokOKOKOK</response>
-    /// <response code="400">Bad Request</response>
-    /// <response code="404">NOT FOUND</response>
-    /// <response code="500">Internal Server error</response>
     [HttpGet]
-    [Route("{customerId:Guid}")]
-    [ProducesResponseType(typeof(CustomerModel), 201)]
+    [Route("{customerId:Guid}",Name = "GetCustomerById")]
+    [ProducesResponseType(typeof(CustomerModel), 200)]
     [ProducesResponseType(404)]
-    [ProducesResponseType(typeof(Order), 400)]
-
     public async Task<ActionResult<CustomerModel>> GetById(Guid customerId)
     {
 

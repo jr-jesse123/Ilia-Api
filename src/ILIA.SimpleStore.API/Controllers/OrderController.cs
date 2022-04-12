@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ILIA.SimpleStore.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("Orders")]
     public class OrderController : BaseCustomController
     {
 
@@ -15,7 +15,10 @@ namespace ILIA.SimpleStore.API.Controllers
         private readonly IOrderService orderService;
         private readonly IRepository<Order> repository;
 
-        public OrderController(ILogger<OrderController> logger, IOrderService orderService, IMapper mapper) : base(mapper)
+        public OrderController(ILogger<OrderController> logger, 
+                IOrderService orderService,
+                IRepository<Order> repository,
+                IMapper mapper) : base(mapper)
         {
             this.logger = logger;
             this.orderService = orderService;
@@ -24,12 +27,16 @@ namespace ILIA.SimpleStore.API.Controllers
 
         [Route("customers/{customerId:Guid}")]
         [HttpPost]
-        public async Task<ActionResult<OrderModel>> CreateAsync(OrderModel orderModel, Guid customerId)
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CustomerModel>), 200)]
+        public async Task<ActionResult<OrderModel>> CreateAsync(OrderCreateModel orderModel, Guid customerId)
         {
             var domainOrder = mapper.Map<Order>(orderModel);
+            //domainOrder.CreatedAt = DateTime.Now;
             
             
             var (orderCreated, errors) = await orderService.CreateOrder(domainOrder, customerId);
+
             
             if (errors is not null && errors.Count() > 0)
             {
@@ -37,8 +44,10 @@ namespace ILIA.SimpleStore.API.Controllers
             }
             else
             {
-                var uri = ""; //TODO: POPLATE URI
-                return Created(uri, orderCreated);
+                var outputOrder = mapper.Map<OrderModel>(orderCreated);
+                var request = this.HttpContext.Request;
+                var uri = $"{request.Scheme}://{request.Host}/Orders/{orderCreated.Id}";
+                return Created(uri, outputOrder);
             }
 
             
@@ -47,10 +56,10 @@ namespace ILIA.SimpleStore.API.Controllers
 
         [Route("{orderId:Guid}")]
         [HttpGet]
-        public ActionResult<OrderModel> Get(Guid orderId)
+        public async Task<ActionResult<OrderModel>> GetAsync(Guid orderId)
         {
-
-            return Ok();
+            var order = await repository.GetById(orderId);
+            return Ok(order);
         }
     }
 }
