@@ -3,4 +3,5 @@
 public class OrderCreateModel
 {
     public decimal Price { get; set; }
+    
 }

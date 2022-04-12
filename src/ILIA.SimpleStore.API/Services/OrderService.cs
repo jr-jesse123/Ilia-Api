@@ -34,7 +34,7 @@ namespace ILIA.SimpleStore.API.Services
             await orderRepository.Commit();
             await _customerRepository.Commit();
 
-            return (order, null);
+            return (orderOutput, null);
 
         }
     }

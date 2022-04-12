@@ -5,15 +5,15 @@ public class Order : EntityBase
     public Order(decimal price)
     {
         Price = price;
-        
-        
+        CreatedAt  = DateTime.Now;
+
     }
-    
+
     //EF
     protected Order()
     {
         
-        CreatedAt  = DateTime.Now;
+        
     }
 
     internal void SetCustomer(Customer customer)
