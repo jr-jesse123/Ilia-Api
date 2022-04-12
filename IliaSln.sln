@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILIA.SimpleStore.API", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILIA.SimpleStore.Domain", "src\ILIA.SimpleStore.Domain\ILIA.SimpleStore.Domain.csproj", "{A976F969-27D1-424E-A70F-AED0E64E1FCD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILIA.SimpleStore.Persistence", "src\ILIA.SimpleStore.Persistence\ILIA.SimpleStore.Persistence.csproj", "{8F629A30-A98C-4CF8-9124-3C27DB90EB56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ILIA.SimpleStore.Infra", "src\ILIA.SimpleStore.Persistence\ILIA.SimpleStore.Infra.csproj", "{8F629A30-A98C-4CF8-9124-3C27DB90EB56}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F16753B2-ED69-432E-ACA1-69477A81F0AB}"
 EndProject
