@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="AggregationRoots\Customer\" />
+  </ItemGroup>
+
 </Project>
