@@ -1,10 +1,12 @@
 using ILIA.SimpleStore.API.Controllers;
 using ILIA.SimpleStore.API.Models;
+using ILIA.SimpleStore.API.Services;
 using ILIA.SimpleStore.Persistence;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,7 +35,9 @@ public abstract class IntegrationTestBase : IDisposable
 
         var options = new DbContextOptionsBuilder<SimpleStoreContext>();
         options.UseInMemoryDatabase("teste");
-        var context = new SimpleStoreContext(options.Options);
+        var mockMailService = new Mock<IMailService>();
+
+        var context = new SimpleStoreContext(options.Options, mockMailService.Object);
 
         var appFactory = new WebApplicationFactory<Program>().WithWebHostBuilder(webHostBuilder =>
         {
